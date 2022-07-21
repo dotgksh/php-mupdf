@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Karkow\MuPdf;
 
 use Karkow\MuPdf\Exceptions\InvalidFormat;
+use Karkow\MuPdf\Exceptions\MuToolBinaryNotAvailable;
 use Karkow\MuPdf\Exceptions\PageDoesNotExist;
 use Karkow\MuPdf\Exceptions\PdfFileDoesNotExist;
-use RuntimeException;
 use Symfony\Component\Process\Process;
 
 class Pdf
@@ -31,10 +31,10 @@ class Pdf
 
         $command = new Process([$this->muToolPath, '-v']);
 
-        $command->mustRun();
+        $command->run();
 
         if (! $command->isSuccessful()) {
-            throw new RuntimeException('mutool is not available');
+            throw new MuToolBinaryNotAvailable('mutool binary is not available');
         }
 
         $this->file = $file;

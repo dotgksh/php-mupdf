@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Karkow\MuPdf\Tests;
 
 use Karkow\MuPdf\Exceptions\InvalidFormat;
+use Karkow\MuPdf\Exceptions\MuToolBinaryNotAvailable;
 use Karkow\MuPdf\Exceptions\PageDoesNotExist;
 use Karkow\MuPdf\Exceptions\PdfFileDoesNotExist;
 use Karkow\MuPdf\Pdf;
@@ -19,6 +20,10 @@ beforeEach(function () {
 it('will throw an exception when try to convert a non existing file', function () {
     new Pdf('does-not-exist.pdf');
 })->throws(PdfFileDoesNotExist::class);
+
+it('will throw an exception when missing mutool binary', function () {
+    new Pdf($this->testFile, 'mootool');
+})->throws(MuToolBinaryNotAvailable::class);
 
 it('will throw an exception when trying to convert to invalid file format', function () {
      (new Pdf($this->testFile))->setOutputFormat('nah');
