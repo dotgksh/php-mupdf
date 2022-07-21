@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Karkow\MuPdf;
 
+use Karkow\MuPdf\Exceptions\InvalidFormat;
+use Karkow\MuPdf\Exceptions\PageDoesNotExist;
+use Karkow\MuPdf\Exceptions\PdfFileDoesNotExist;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
 class Pdf
 {
+    public const SUPPORTED_FORMATS = ['jpg', 'jpeg', 'png'];
+
     protected string $file;
     protected string $muToolPath;
     protected string $outputFormat = 'jpg';
@@ -19,7 +24,7 @@ class Pdf
     public function __construct(string $file, string $muToolPath = 'bin/mutool')
     {
         if (! file_exists($file)) {
-            throw new RuntimeException("File `$file` does not exist");
+            throw new PdfFileDoesNotExist("File `$file` does not exist");
         }
 
         $this->muToolPath = $muToolPath;
@@ -38,7 +43,7 @@ class Pdf
     public function setPage(int $page) : self
     {
         if ($page > $this->numberOfPages() || $page < 1) {
-            throw new RuntimeException("Page $page does not exist");
+            throw new PageDoesNotExist("Page $page does not exist");
         }
 
         $this->page = $page;
@@ -58,6 +63,22 @@ class Pdf
         $this->height = $height;
 
         return $this;
+    }
+
+    public function setOutputFormat(string $format) : self
+    {
+        if (! $this->isValidOutputFormat($format)) {
+            throw new InvalidFormat("Format `$format` is not supported");
+        }
+
+        $this->outputFormat = $format;
+
+        return $this;
+    }
+
+    private function isValidOutputFormat(string $format) : bool
+    {
+        return in_array($format, self::SUPPORTED_FORMATS);
     }
 
     public function numberOfPages() : int

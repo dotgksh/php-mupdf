@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Karkow\MuPdf\Tests;
 
+use Karkow\MuPdf\Exceptions\InvalidFormat;
+use Karkow\MuPdf\Exceptions\PageDoesNotExist;
+use Karkow\MuPdf\Exceptions\PdfFileDoesNotExist;
 use Karkow\MuPdf\Pdf;
-use RuntimeException;
 
 beforeEach(function () {
     $this->testFile = __DIR__ . '/files/test.pdf';
@@ -16,18 +18,17 @@ beforeEach(function () {
 
 it('will throw an exception when try to convert a non existing file', function () {
     new Pdf('does-not-exist.pdf');
-})->throws(RuntimeException::class);
+})->throws(PdfFileDoesNotExist::class);
 
-it('will throw an exception when trying to convert to invalid file type', function () {
-    // (new Pdf($this->testFile))->setOutputFormat('bla');
+it('will throw an exception when trying to convert to invalid file format', function () {
+     (new Pdf($this->testFile))->setOutputFormat('nah');
 })
-    ->throws(RuntimeException::class)
-    ->skip('missing implementation');
+    ->throws(InvalidFormat::class);
 
 it('will throw an exception when passed an invalid page number', function ($invalidPage) {
     (new Pdf($this->multipageTestFile))->setPage($invalidPage);
 })
-    ->throws(RuntimeException::class)
+    ->throws(PageDoesNotExist::class)
     ->with([6, 0, -1]);
 
 it('will correctly return the number of pages in pdf file', function () {
@@ -78,12 +79,15 @@ it('will convert all pages', function () {
     }
 });
 
-it('will accept a specified file type and convert to it', function () {
+it('will accept a specified file format and convert to it', function ($format) {
     $pdf = new Pdf($this->testFile);
 
     $pdf
-        // ->setOutputFormat('png')
-        ->saveImage($path = __DIR__ . '/conversions/page-1.png');
+        ->setOutputFormat($format)
+        ->saveAllPagesAsImages($dir = __DIR__ . '/conversions/', $prefix = 'page-');
+
+    $path = "$dir/{$prefix}1.$format";
 
     expect(file_exists($path))->toBeTrue();
-})->skip('missing implementation');
+    expect(pathinfo($path, PATHINFO_EXTENSION))->toBe($format);
+})->with(Pdf::SUPPORTED_FORMATS);
