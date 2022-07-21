@@ -40,6 +40,7 @@
             "Karkow\\MuPdf\\Tests\\": "tests"
         }
     },
+    "bin": ["bin/mutool"],
     "scripts": {
         "test": "pest --colors=always",
         "check-style": "phpcs src tests",
