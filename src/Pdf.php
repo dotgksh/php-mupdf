@@ -10,18 +10,21 @@ use Symfony\Component\Process\Process;
 class Pdf
 {
     protected string $file;
+    protected string $muToolPath;
     protected string $outputFormat = 'jpg';
     protected int $page = 1;
     protected int $width = 1920;
     protected int $height = 1080;
 
-    public function __construct($file)
+    public function __construct(string $file, string $muToolPath = 'bin/mutool')
     {
         if (! file_exists($file)) {
             throw new RuntimeException("File `$file` does not exist");
         }
 
-        $command = new Process(['bin/mutool', '-v']);
+        $this->muToolPath = $muToolPath;
+
+        $command = new Process([$this->muToolPath, '-v']);
 
         $command->mustRun();
 
@@ -60,7 +63,7 @@ class Pdf
     public function numberOfPages() : int
     {
         $command = new Process([
-            'bin/mutool',
+            $this->muToolPath,
             'show',
             $this->file,
             'trailer/Root/Pages/Count',
@@ -78,7 +81,7 @@ class Pdf
         }
 
         $command = new Process([
-            'bin/mutool',
+            $this->muToolPath,
             'draw',
             '-w',
             $this->width,
