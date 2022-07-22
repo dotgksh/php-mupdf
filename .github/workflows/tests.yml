@@ -8,8 +8,8 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                os: [ ubuntu-latest, macos-latest, windows-latest ]
-                php: [ 7.4 ]
+                os: [ ubuntu-latest, macos-latest ]
+                php: [ 7.4, 8.0 ]
                 dependency-version: [ prefer-lowest, prefer-stable ]
 
         name: Tests P${{ matrix.php }} - ${{ matrix.os }} - ${{ matrix.dependency-version }}
@@ -34,6 +34,10 @@ jobs:
 
             -   name: Install Composer dependencies
                 run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist
+
+            -   name: Replace mutool binary for macos
+                if: ${{ matrix.os === 'macos-latest' }}
+                run: mv ./bin/mutool-macos ./bin/mutool
 
             -   name: Unit Tests
                 run: php ./vendor/bin/pest
