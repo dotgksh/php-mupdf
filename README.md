@@ -19,10 +19,33 @@ $ composer require karkowg/php-mupdf
 
 ## Usage
 
+### Convert all the pages to jpg
+
 ``` php
 $pdf = new Karkow\MuPdf\Pdf('path/to/pdf/file');
 
 $pdf->saveAllPagesAsImages('./images/', 'page-');
+```
+
+### Convert a single page to png
+
+``` php
+$pdf = new Karkow\MuPdf\Pdf('path/to/pdf/file');
+
+$pdf
+    ->setPage(2)
+    ->setOutputFormat('png')
+    ->saveImage('./images/page-2.png');
+```
+
+Please refer to `tests/PdfTest.php` for other use cases.
+
+## [mutool](https://mupdf.com/releases/index.html)
+
+A compiled binary (v1.20.0) is available at `bin/mutool`. If for any reason you want/need to use your own installation, you can do so by passing its path as a 2nd argument to the constructor.
+
+``` php
+$pdf = new Karkow\MuPdf\Pdf('path/to/pdf/file', 'path/to/mutool');
 ```
 
 ## Change log
