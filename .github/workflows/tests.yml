@@ -37,7 +37,9 @@ jobs:
 
             -   name: Replace mutool binary for macos
                 if: ${{ matrix.os == 'macos-latest' }}
-                run: mv ./bin/mutool-macos ./bin/mutool
+                run: |
+                    mv ./bin/mutool-macos ./bin/mutool
+                    ls -la ./bin
 
             -   name: Unit Tests
                 run: php ./vendor/bin/pest
