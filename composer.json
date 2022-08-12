@@ -23,8 +23,8 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
-        "symfony/process": "^5.4"
+        "php": "^8.0",
+        "symfony/process": "^6.0"
     },
     "require-dev": {
         "pestphp/pest": "^1.21",
