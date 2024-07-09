@@ -1,13 +1,14 @@
+<p align="center">
+    <img src="https://banners.beyondco.de/gksh%2Fphp-mupdf.png?theme=light&packageManager=composer+require&packageName=karkowg%2Fphp-mupdf&pattern=wiggle&style=style_1&description=Minimal+PDF+to+image+converter+using+MuPDF&md=1&showWatermark=0&fontSize=175px&images=photograph&widths=100&heights=100" alt="Package banner">
+</p>
+
 # php-mupdf
-
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Software License][ico-license]](LICENSE.md)
-[![Build Status][ico-travis]][link-travis]
-[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Quality Score][ico-code-quality]][link-code-quality]
-[![Total Downloads][ico-downloads]][link-downloads]
-
 Minimal PDF to image converter using [MuPDF](https://mupdf.com/docs/mutool.html). Heavily inspired by [spatie/image-to-pdf](https://github.com/spatie/pdf-to-image).
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/karkowg/php-mupdf.svg)](https://packagist.org/packages/karkowg/php-mupdf)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/karkowg/php-mupdf/tests.yml?branch=main)](https://github.com/dotgksh/php-mupdf/actions?query=workflow%3Atests+branch%3Amain)
+[![License](https://img.shields.io/packagist/l/karkowg/php-mupdf.svg)](https://github.com/dotgksh/php-mupdf/blob/main/LICENSE.md)
+[![Total Downloads](https://img.shields.io/packagist/dt/karkowg/php-mupdf.svg)](https://packagist.org/packages/karkowg/php-mupdf)
 
 ## Install
 
