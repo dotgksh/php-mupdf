@@ -54,14 +54,13 @@ jobs:
 
             -   name: Create release
                 id: create_release
-                uses: actions/create-release@v1
+                uses: elgohr/Github-Release-Action@v5
                 env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 with:
-                    tag_name: ${{ github.ref }}
-                    release_name: Release ${{ github.ref }}
-                    draft: true
-                    prerelease: false
+                    title: Release ${{ github.ref }}
+                    tag: ${{ github.ref }}
+                    prerelease: true
 
             -   name: Upload Linux binary to Release
                 uses: actions/upload-release-asset@v1
