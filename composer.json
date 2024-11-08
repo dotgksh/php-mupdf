@@ -41,7 +41,14 @@
     "scripts": {
         "test": "pest --colors=always",
         "check-style": "phpcs src tests",
-        "fix-style": "phpcbf src tests"
+        "fix-style": "phpcbf src tests",
+        "install-mutool": "@php scripts/install.php",
+        "post-install-cmd": [
+            "@install-mutool"
+        ],
+        "post-update-cmd": [
+            "@install-mutool"
+        ]
     },
     "extra": {
         "branch-alias": {
