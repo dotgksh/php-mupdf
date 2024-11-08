@@ -1,0 +1,39 @@
+name: Release
+
+on:
+    push:
+        branches:
+            - "3.x"
+        tags:
+            - "v*"
+
+jobs:
+    build:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: true
+            matrix:
+                os: [ ubuntu-latest, macos-latest ]
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+
+            -   name: Set up permissions to execute build script for Linux/macOS
+                if: ${{ matrix.os != 'windows-latest' }}
+                run: chmod +x build-mupdf.sh
+
+            -   name: Build mutool
+                shell: bash
+                run: ./build-mupdf.sh
+
+            -   name: Save binary
+                run: |
+                    mkdir -p dist
+                    cp bin/mutool dist/mutool-${{ matrix.os }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+
+            -   name: Upload binary artifact
+                uses: actions/upload-artifact@v4
+                with:
+                    name: mutool-${{ matrix.os }}
+                    path: dist/mutool-${{ matrix.os }}*
