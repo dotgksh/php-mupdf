@@ -29,12 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Karkow\\MuPdf\\": "src"
+            "Gksh\\MuPdf\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Karkow\\MuPdf\\Tests\\": "tests"
+            "Gksh\\MuPdf\\Tests\\": "tests"
         }
     },
     "bin": ["bin/mutool"],

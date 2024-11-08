@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Karkow\MuPdf;
+namespace Gksh\MuPdf;
 
-use Karkow\MuPdf\Exceptions\InvalidFormat;
-use Karkow\MuPdf\Exceptions\MuToolBinaryNotAvailable;
-use Karkow\MuPdf\Exceptions\PageDoesNotExist;
-use Karkow\MuPdf\Exceptions\PdfFileDoesNotExist;
+use Gksh\MuPdf\Exceptions\InvalidFormat;
+use Gksh\MuPdf\Exceptions\MuToolBinaryNotAvailable;
+use Gksh\MuPdf\Exceptions\PageDoesNotExist;
+use Gksh\MuPdf\Exceptions\PdfFileDoesNotExist;
 use Symfony\Component\Process\Process;
 
 class Pdf

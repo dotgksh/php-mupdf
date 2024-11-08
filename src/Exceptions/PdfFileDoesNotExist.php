@@ -1,6 +1,6 @@
 <?php
 
-namespace Karkow\MuPdf\Exceptions;
+namespace Gksh\MuPdf\Exceptions;
 
 use RuntimeException;
 
