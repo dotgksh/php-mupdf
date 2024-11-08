@@ -39,6 +39,8 @@ jobs:
     release:
         needs: build
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
         steps:
             -   name: Download mutool binary (Linux)
                 uses: actions/download-artifact@v4
@@ -58,8 +60,8 @@ jobs:
                 env:
                     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 with:
-                    title: Release ${{ github.ref }}
-                    tag: ${{ github.ref }}
+                    title: Release ${{ github.ref_name }}
+                    tag: ${{ github.ref_name }}
                     prerelease: true
 
             -   name: Upload Linux binary to Release
