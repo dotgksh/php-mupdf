@@ -21,7 +21,6 @@ mkdir -p "$target_dir"
                 export CFLAGS="-m64"
             elif [[ "$ARCH" == "arm64" ]]; then
                 export CC="aarch64-linux-gnu-gcc"
-                export CFLAGS="-marm"
             fi
             make HAVE_X11=no HAVE_GLUT=no prefix=../../install_${OS}_${ARCH} install
         else
