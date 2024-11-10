@@ -6,3 +6,4 @@ phpunit.xml
 .phpunit.result.cache
 .idea
 .vscode
+.phpactor.json

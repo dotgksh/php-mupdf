@@ -1,31 +1,80 @@
 <?php
 
+$binDir = __DIR__ . "/../vendor/bin";
+
+function getArchitecture()
+{
+    $arch = strtolower(php_uname("m"));
+    $archMap = [
+        "x86_64" => "amd64",
+        "amd64" => "amd64",
+        "aarch64" => "arm64",
+        "arm64" => "arm64",
+    ];
+
+    return $archMap[$arch] ?? null;
+}
+
+function getBinaryUrl($os, $architecture)
+{
+    $binaryUrls = [
+        "linux" => [
+            "amd64" => "https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool_linux_amd64",
+            "arm64" => "https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool_linux_arm64",
+        ],
+        "darwin" => [
+            "amd64" => "https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool_darwin_amd64",
+            "arm64" => "https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool_darwin_arm64",
+        ],
+        "windows" => [],
+    ];
+
+    return $binaryUrls[$os][$architecture] ?? null;
+}
+
+function downloadBinary($url, $target)
+{
+    $content = file_get_contents($url);
+
+    if ($content === false) {
+        throw new Exception("Failed to download from $url");
+    }
+
+    file_put_contents($target, $content);
+}
+
 $os = strtolower(PHP_OS_FAMILY);
-$binDir = __DIR__ . '/../vendor/bin';
+$architecture = getArchitecture();
 
-$binaryUrls = [
-    'linux' => 'https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool-linux',
-    'darwin' => 'https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool-macos',
-    'windows' => 'https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool-windows.exe',
-];
-
-if (!array_key_exists($os, $binaryUrls)) {
-    echo "Unsupported OS: $os\n";
+if (! $architecture) {
+    echo "Unsupported architecture: " . php_uname("m") . "\n";
     exit(1);
 }
 
-if (!file_exists($binDir)) {
+$url = getBinaryUrl($os, $architecture);
+
+if (! $url) {
+    echo "Unsupported OS: $os or architecture: $architecture\n";
+    exit(1);
+}
+
+if (! file_exists($binDir)) {
     mkdir($binDir, 0755, true);
 }
 
-$target = "$binDir/mutool" . ($os === 'windows' ? '.exe' : '');
+$target = "$binDir/mutool" . ($os === "windows" ? ".exe" : "");
 
-echo "Downloading mutool binary for $os...\n";
+echo "Downloading mutool binary for $os ($architecture)...\n";
 
-file_put_contents($target, file_get_contents($binaryUrls[$os]));
+try {
+    downloadBinary($url, $target);
 
-if ($os !== 'windows') {
-    chmod($target, 0755);
+    if ($os !== "windows") {
+        chmod($target, 0755);
+    }
+
+    echo "Installed mutool binary in $target\n";
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage() . "\n";
+    exit(1);
 }
-
-echo "Installed mutool binary in $target\n";

@@ -12,6 +12,7 @@ jobs:
             fail-fast: true
             matrix:
                 os: [ ubuntu-latest, macos-latest ]
+                arch: [ amd64, arm64 ]
 
         steps:
             -   name: Checkout
@@ -21,36 +22,29 @@ jobs:
                 if: ${{ matrix.os != 'windows-latest' }}
                 run: chmod +x build-mupdf.sh
 
-            -   name: Build mutool
+            -   name: Build mutool for ${{ matrix.os }} ${{ matrix.arch }}
                 shell: bash
-                run: ./build-mupdf.sh
-
-            -   name: Save binary
                 run: |
-                    mkdir -p dist
-                    cp bin/mutool dist/mutool-${{ matrix.os }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+                    target_os=${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}
+                    target_arch=${{ matrix.arch }}
+
+                    OS=$target_os ARCH=$target_arch ./build-mupdf.sh
 
             -   name: Upload binary artifact
                 uses: actions/upload-artifact@v4
                 with:
-                    name: mutool-${{ matrix.os }}
-                    path: dist/mutool-${{ matrix.os }}*
+                    name: mutool_${{ matrix.os }}_${{ matrix.arch }}
+                    path: bin/mutool_${{ matrix.os }}*
 
     release:
         needs: build
         runs-on: ubuntu-latest
         steps:
-            -   name: Download mutool binary (Linux)
+            -   name: Download mutool binaries
                 uses: actions/download-artifact@v4
                 with:
-                    name: mutool-ubuntu-latest
-                    path: dist/
-
-            -   name: Download mutool binary (macOS)
-                uses: actions/download-artifact@v4
-                with:
-                    name: mutool-macos-latest
-                    path: dist/
+                    path: bin/
+                    pattern: mutool_*
 
             -   name: Create release
                 id: create_release
@@ -63,22 +57,42 @@ jobs:
                     draft: true
                     prerelease: false
 
-            -   name: Upload Linux binary to Release
+            -   name: Upload Linux binary (amd64) to Release
                 uses: actions/upload-release-asset@v1
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 with:
                     upload_url: ${{ steps.create_release.outputs.upload_url }}
-                    asset_path: dist/mutool-ubuntu-latest
-                    asset_name: mutool-linux
+                    asset_path: bin/mutool_linux_amd64
+                    asset_name: mutool_linux_amd64
                     asset_content_type: application/octet-stream
 
-            -   name: Upload macOS binary to Release
+            -   name: Upload Linux binary (arm64) to Release
                 uses: actions/upload-release-asset@v1
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 with:
                     upload_url: ${{ steps.create_release.outputs.upload_url }}
-                    asset_path: dist/mutool-macos-latest
-                    asset_name: mutool-macos
+                    asset_path: bin/mutool_linux_arm64
+                    asset_name: mutool_linux_arm64
+                    asset_content_type: application/octet-stream
+
+            -   name: Upload macOS binary (amd64) to Release
+                uses: actions/upload-release-asset@v1
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                with:
+                    upload_url: ${{ steps.create_release.outputs.upload_url }}
+                    asset_path: bin/mutool_darwin_amd64
+                    asset_name: mutool_darwin_amd64
+                    asset_content_type: application/octet-stream
+
+            -   name: Upload macOS binary (arm64) to Release
+                uses: actions/upload-release-asset@v1
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                with:
+                    upload_url: ${{ steps.create_release.outputs.upload_url }}
+                    asset_path: bin/mutool_darwin_arm64
+                    asset_name: mutool_darwin_arm64
                     asset_content_type: application/octet-stream
