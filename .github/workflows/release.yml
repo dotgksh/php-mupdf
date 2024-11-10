@@ -22,6 +22,12 @@ jobs:
                 if: ${{ matrix.os != 'windows-latest' }}
                 run: chmod +x build-mupdf.sh
 
+            -   name: Install cross-compiler for arm64 on Ubuntu
+                if: ${{ matrix.os == 'ubuntu-latest' }}
+                run: |
+                    sudo apt-get update
+                    sudo apt-get install -y gcc-aarch64-linux-gnu
+
             -   name: Build mutool for ${{ matrix.os }} ${{ matrix.arch }}
                 shell: bash
                 run: |
