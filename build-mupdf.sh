@@ -30,6 +30,7 @@ mkdir -p "$target_dir"
             elif [[ "$ARCH" == "arm64" ]]; then
                 export CC="clang"
                 export CFLAGS="-arch arm64"
+                export LDFLAGS="-L/usr/local/lib -lX11 -lGL"
             fi
             make HAVE_X11=no HAVE_GLUT=no prefix=../../install_${OS}_${ARCH} install
         fi
