@@ -19,15 +19,15 @@ if [[ "$OS" == "linux" ]]; then
     fi
     make HAVE_X11=no HAVE_GLUT=no prefix=../. install
 else
-    # if [[ "$ARCH" == "x86_64" ]]; then
-    #     export CC="clang"
-    #     export XCFLAGS="-arch x86_64"
-    #     export XLDFLAGS="-L/usr/local/lib -lX11 -lGL"
-    # elif [[ "$ARCH" == "arm64" ]]; then
-        # export CC="clang"
-        # export XCFLAGS="-arch arm64"
-        # export XLDFLAGS="-L/usr/local/lib -lX11 -lGL"
-    # fi
+    if [[ "$ARCH" == "x86_64" ]]; then
+        export CC="clang"
+        export XCFLAGS="-arch x86_64"
+        export XLDFLAGS="-L/usr/local/lib -lX11 -lGL"
+    elif [[ "$ARCH" == "arm64" ]]; then
+        export CC="clang"
+        export XCFLAGS="-arch arm64"
+        export XLDFLAGS="-L/usr/local/lib -lX11 -lGL"
+    fi
     make HAVE_X11=no HAVE_GLUT=no prefix=../. install
 fi
 
