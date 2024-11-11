@@ -36,7 +36,6 @@ jobs:
                 run: |
                     echo "export HOMEBREW_NO_AUTO_UPDATE=1" >> $GITHUB_ENV
                     brew install --cask xquartz
-                    which xterm
 
             -   name: Build mutool for ${{ matrix.os }} ${{ matrix.arch }}
                 shell: bash

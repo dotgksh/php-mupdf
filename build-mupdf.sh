@@ -34,6 +34,7 @@ else
         export XLDFLAGS="-L/opt/X11/lib -lX11 -framework OpenGL"
         export XCXXFLAGS="-v"
     fi
+    which xterm
     ps aux | grep XQuartz
     make prefix=../. install
 fi
