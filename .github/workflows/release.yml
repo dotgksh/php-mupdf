@@ -43,7 +43,8 @@ jobs:
                 uses: actions/upload-artifact@v4
                 with:
                     name: mutool_${{ matrix.os }}_${{ matrix.arch }}
-                    path: bin/mutool_${{ matrix.os }}*
+                    # path: bin/mutool_${{ matrix.os }}*
+                    path: bin/mutool*
 
     release:
         needs: build
