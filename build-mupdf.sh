@@ -40,5 +40,8 @@ mkdir -p "$target_dir"
 
 ls -la
 ls -la build
+ls -la build/install_${OS}_${ARCH}
+ls -la build/install_${OS}_${ARCH}/bin
+ls -la build/install_${OS}_${ARCH}/release
 # cp ./build/${OS}_${ARCH}/mupdf-${VERSION}-source/bin/mutool ./bin/mutool_${OS}_${ARCH}
 cp ./build/install_${OS}_${ARCH}/bin/mutool ./bin/mutool_${OS}_${ARCH}
