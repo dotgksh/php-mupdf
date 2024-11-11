@@ -24,18 +24,21 @@ mkdir -p "$target_dir"
             fi
             make HAVE_X11=no HAVE_GLUT=no prefix=../../install_${OS}_${ARCH} install
         else
-            if [[ "$ARCH" == "x86_64" ]]; then
-                export CC="clang"
-                export XCFLAGS="-arch x86_64"
-                export XLDFLAGS="-L/usr/local/lib -lX11 -lGL"
+            # if [[ "$ARCH" == "x86_64" ]]; then
+            #     export CC="clang"
+            #     export XCFLAGS="-arch x86_64"
+            #     export XLDFLAGS="-L/usr/local/lib -lX11 -lGL"
             # elif [[ "$ARCH" == "arm64" ]]; then
                 # export CC="clang"
                 # export XCFLAGS="-arch arm64"
                 # export XLDFLAGS="-L/usr/local/lib -lX11 -lGL"
-            fi
+            # fi
             make HAVE_X11=no HAVE_GLUT=no prefix=../../install_${OS}_${ARCH} install
         fi
     )
 )
 
-cp ./build/${OS}_${ARCH}/mupdf-${VERSION}-source/bin/mutool ./bin/mutool_${OS}_${ARCH}
+ls -la
+ls -la build
+# cp ./build/${OS}_${ARCH}/mupdf-${VERSION}-source/bin/mutool ./bin/mutool_${OS}_${ARCH}
+cp ./build/install_${OS}_${ARCH}/bin/mutool ./bin/mutool_${OS}_${ARCH}
