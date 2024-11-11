@@ -28,8 +28,8 @@ mkdir -p "$target_dir"
                 export CC="clang"
                 export XCFLAGS="-arch x86_64"
                 export XLDFLAGS="-L/usr/local/lib -lX11 -lGL"
-            elif [[ "$ARCH" == "arm64" ]]; then
-                export CC="clang"
+            # elif [[ "$ARCH" == "arm64" ]]; then
+                # export CC="clang"
                 # export XCFLAGS="-arch arm64"
                 # export XLDFLAGS="-L/usr/local/lib -lX11 -lGL"
             fi
