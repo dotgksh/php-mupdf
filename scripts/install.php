@@ -6,8 +6,8 @@ function getArchitecture()
 {
     $arch = strtolower(php_uname("m"));
     $archMap = [
-        "x86_64" => "amd64",
-        "amd64" => "amd64",
+        "x86_64" => "x86_64",
+        "amd64" => "x86_64",
         "aarch64" => "arm64",
         "arm64" => "arm64",
     ];
@@ -19,11 +19,11 @@ function getBinaryUrl($os, $architecture)
 {
     $binaryUrls = [
         "linux" => [
-            "amd64" => "https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool_linux_amd64",
+            "x86_64" => "https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool_linux_x86_64",
             "arm64" => "https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool_linux_arm64",
         ],
         "darwin" => [
-            "amd64" => "https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool_darwin_amd64",
+            "x86_64" => "https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool_darwin_x86_64",
             "arm64" => "https://github.com/dotgksh/php-mupdf/releases/latest/download/mutool_darwin_arm64",
         ],
         "windows" => [],

@@ -63,14 +63,14 @@ jobs:
                     draft: true
                     prerelease: false
 
-            -   name: Upload Linux binary (amd64) to Release
+            -   name: Upload Linux binary (x86_64) to Release
                 uses: actions/upload-release-asset@v1
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 with:
                     upload_url: ${{ steps.create_release.outputs.upload_url }}
-                    asset_path: bin/mutool_linux_amd64
-                    asset_name: mutool_linux_amd64
+                    asset_path: bin/mutool_linux_x86_64
+                    asset_name: mutool_linux_x86_64
                     asset_content_type: application/octet-stream
 
             -   name: Upload Linux binary (arm64) to Release
@@ -83,14 +83,14 @@ jobs:
                     asset_name: mutool_linux_arm64
                     asset_content_type: application/octet-stream
 
-            -   name: Upload macOS binary (amd64) to Release
+            -   name: Upload macOS binary (x86_64) to Release
                 uses: actions/upload-release-asset@v1
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 with:
                     upload_url: ${{ steps.create_release.outputs.upload_url }}
-                    asset_path: bin/mutool_darwin_amd64
-                    asset_name: mutool_darwin_amd64
+                    asset_path: bin/mutool_darwin_x86_64
+                    asset_name: mutool_darwin_x86_64
                     asset_content_type: application/octet-stream
 
             -   name: Upload macOS binary (arm64) to Release
