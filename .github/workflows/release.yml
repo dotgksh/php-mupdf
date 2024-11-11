@@ -42,7 +42,7 @@ jobs:
             -   name: Upload binary artifact
                 uses: actions/upload-artifact@v4
                 with:
-                    name: mutool_${{ matrix.os }}_${{ matrix.arch }}
+                    name: mutool_${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}_${{ matrix.arch }}
                     # path: bin/mutool_${{ matrix.os }}*
                     path: bin/mutool*
 

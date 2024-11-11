@@ -13,22 +13,29 @@ cd mupdf-$VERSION-source || exit
 if [[ "$OS" == "linux" ]]; then
     if [[ "$ARCH" == "x86_64" ]]; then
         export CC="gcc"
-        export CFLAGS="-m64"
+        export XCFLAGS="-m64"
     elif [[ "$ARCH" == "arm64" ]]; then
         export CC="aarch64-linux-gnu-gcc"
+        export CXX="aarch64-linux-gnu-g++"
+        export XCFLAGS="-march=armv8-a"
     fi
     make HAVE_X11=no HAVE_GLUT=no prefix=../. install
 else
     if [[ "$ARCH" == "x86_64" ]]; then
         export CC="clang"
+        export CXX="clang++"
         export XCFLAGS="-arch x86_64"
-        export XLDFLAGS="-L/usr/local/lib -lX11 -lGL"
+        export XLDFLAGS="-L/opt/X11/lib -lX11 -framework OpenGL"
+        export XCXXFLAGS="-v"
     elif [[ "$ARCH" == "arm64" ]]; then
         export CC="clang"
+        export CXX="clang++"
         export XCFLAGS="-arch arm64"
-        export XLDFLAGS="-L/usr/local/lib -lX11 -lGL"
+        export XLDFLAGS="-L/opt/X11/lib -lX11 -framework OpenGL"
+        export XCXXFLAGS="-v"
     fi
-    make HAVE_X11=no HAVE_GLUT=no prefix=../. install
+    ps aux | grep XQuartz
+    make prefix=../. install
 fi
 
 cd ..
