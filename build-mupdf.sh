@@ -16,7 +16,7 @@ mkdir -p "$target_dir"
     (
         cd mupdf-$VERSION-source || exit
         if [[ "$OS" == "linux" ]]; then
-            if [[ "$ARCH" == "amd64" ]]; then
+            if [[ "$ARCH" == "x86_64" ]]; then
                 export CC="gcc"
                 export CFLAGS="-m64"
             elif [[ "$ARCH" == "arm64" ]]; then
@@ -24,13 +24,13 @@ mkdir -p "$target_dir"
             fi
             make HAVE_X11=no HAVE_GLUT=no prefix=../../install_${OS}_${ARCH} install
         else
-            if [[ "$ARCH" == "amd64" ]]; then
+            if [[ "$ARCH" == "x86_64" ]]; then
                 export CC="clang"
-                export CFLAGS="-arch x86_64"
+                export XCFLAGS="-arch x86_64"
             elif [[ "$ARCH" == "arm64" ]]; then
                 export CC="clang"
-                export CFLAGS="-arch arm64"
-                export LDFLAGS="-L/usr/local/lib -lX11 -lGL"
+                export XCFLAGS="-arch arm64"
+                export XLDFLAGS="-L/usr/local/lib -lX11 -lGL"
             fi
             make HAVE_X11=no HAVE_GLUT=no prefix=../../install_${OS}_${ARCH} install
         fi

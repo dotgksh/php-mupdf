@@ -12,10 +12,7 @@ jobs:
             fail-fast: true
             matrix:
                 os: [ ubuntu-latest, macos-latest ]
-                arch: [ amd64, arm64 ]
-                exclude:
-                    -   os: macos-latest
-                        arch: arm64
+                arch: [ x86_64, arm64 ]
 
         steps:
             -   name: Checkout
