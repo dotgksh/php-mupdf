@@ -28,9 +28,9 @@ else
         export XLDFLAGS="-L/opt/X11/lib -lX11 -framework OpenGL"
         export XCXXFLAGS="-v"
     elif [[ "$ARCH" == "arm64" ]]; then
-        export CC="clang"
-        export CXX="clang++"
-        export XCFLAGS="-arch arm64"
+        export CC="gcc-12"
+        export CXX="g++-12"
+        export XCFLAGS="-arch arm64 -I/opt/X11/include"
         export XLDFLAGS="-L/opt/X11/lib -lX11 -framework OpenGL"
         export XCXXFLAGS="-v"
     fi
