@@ -29,7 +29,14 @@ jobs:
                 if: ${{ matrix.os == 'ubuntu-latest' }}
                 run: |
                     sudo apt-get update
-                    sudo apt-get install -y gcc-aarch64-linux-gnu
+                    sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+            -   name: Install XQuartz
+                if: ${{ matrix.os == 'macos-latest' }}
+                run: |
+                    echo "export HOMEBREW_NO_AUTO_UPDATE=1" >> $GITHUB_ENV
+                    brew install --cask xquartz
+                    which xterm
 
             -   name: Build mutool for ${{ matrix.os }} ${{ matrix.arch }}
                 shell: bash
