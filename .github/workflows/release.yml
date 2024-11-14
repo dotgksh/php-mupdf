@@ -1,0 +1,114 @@
+name: Release
+
+on:
+    push:
+        tags:
+            - "v*"
+
+jobs:
+    build:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: true
+            matrix:
+                os: [ ubuntu-latest, macos-latest ]
+                arch: [ x86_64, arm64 ]
+                exclude:
+                    -   os: macos-latest
+                        arch: x86_64
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+
+            -   name: Set up permissions to execute build script for Linux/macOS
+                if: ${{ matrix.os != 'windows-latest' }}
+                run: chmod +x build-mupdf.sh
+
+            -   name: Install cross-compiler for arm64 on Ubuntu
+                if: ${{ matrix.os == 'ubuntu-latest' }}
+                run: |
+                    sudo apt-get update
+                    sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+            -   name: Install XQuartz
+                if: ${{ matrix.os == 'macos-latest' }}
+                run: |
+                    echo "export HOMEBREW_NO_AUTO_UPDATE=1" >> $GITHUB_ENV
+                    brew install --cask xquartz
+
+            -   name: Build mutool for ${{ matrix.os }} ${{ matrix.arch }}
+                shell: bash
+                run: |
+                    target_os=${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}
+                    target_arch=${{ matrix.arch }}
+
+                    OS=$target_os ARCH=$target_arch ./build-mupdf.sh
+
+            -   name: Upload binary artifact
+                uses: actions/upload-artifact@v4
+                with:
+                    name: mutool_${{ matrix.os == 'ubuntu-latest' && 'linux' || 'darwin' }}_${{ matrix.arch }}
+                    # path: bin/mutool_${{ matrix.os }}*
+                    path: bin/mutool*
+
+    release:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Download mutool binaries
+                uses: actions/download-artifact@v4
+                with:
+                    path: bin/
+                    pattern: mutool_*
+
+            -   name: Create release
+                id: create_release
+                uses: actions/create-release@v1
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                with:
+                    tag_name: ${{ github.ref }}
+                    release_name: Release ${{ github.ref }}
+                    draft: true
+                    prerelease: false
+
+            -   name: Upload Linux binary (x86_64) to Release
+                uses: actions/upload-release-asset@v1
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                with:
+                    upload_url: ${{ steps.create_release.outputs.upload_url }}
+                    asset_path: bin/mutool_linux_x86_64
+                    asset_name: mutool_linux_x86_64
+                    asset_content_type: application/octet-stream
+
+            -   name: Upload Linux binary (arm64) to Release
+                uses: actions/upload-release-asset@v1
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                with:
+                    upload_url: ${{ steps.create_release.outputs.upload_url }}
+                    asset_path: bin/mutool_linux_arm64
+                    asset_name: mutool_linux_arm64
+                    asset_content_type: application/octet-stream
+
+            -   name: Upload macOS binary (x86_64) to Release
+                uses: actions/upload-release-asset@v1
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                with:
+                    upload_url: ${{ steps.create_release.outputs.upload_url }}
+                    asset_path: bin/mutool_darwin_x86_64
+                    asset_name: mutool_darwin_x86_64
+                    asset_content_type: application/octet-stream
+
+            -   name: Upload macOS binary (arm64) to Release
+                uses: actions/upload-release-asset@v1
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                with:
+                    upload_url: ${{ steps.create_release.outputs.upload_url }}
+                    asset_path: bin/mutool_darwin_arm64
+                    asset_name: mutool_darwin_arm64
+                    asset_content_type: application/octet-stream

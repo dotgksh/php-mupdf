@@ -1,25 +1,22 @@
 {
-    "name": "karkowg/php-mupdf",
+    "name": "gksh/php-mupdf",
     "type": "library",
     "description": "Minimal PDF to image converter using MuPDF",
     "keywords": [
-        "karkowg",
+        "php",
         "mutool",
         "mupdf",
-        "php-mupdf",
-        "pdf-to-image",
         "pdf",
+        "pdf-to-image",
         "convert",
         "image"
     ],
-    "homepage": "https://github.com/karkowg/php-mupdf",
+    "homepage": "https://github.com/dotgksh/php-mupdf",
     "license": "MIT",
     "authors": [
         {
             "name": "Gustavo Karkow",
-            "email": "karkowg@gmail.com",
-            "homepage": "https://github.com/karkowg",
-            "role": "Developer"
+            "email": "karkowg@gmail.com"
         }
     ],
     "require": {
@@ -32,12 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Karkow\\MuPdf\\": "src"
+            "Gksh\\MuPdf\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Karkow\\MuPdf\\Tests\\": "tests"
+            "Gksh\\MuPdf\\Tests\\": "tests"
         }
     },
     "bin": ["bin/mutool"],
